@@ -1,20 +1,19 @@
-// src/app/page.js
+// src/app/page.tsx
 'use client';
 
 import { useState } from 'react';
+import type { FormEvent } from 'react';
 
 export default function Home() {
   const [query, setQuery] = useState('restaurants in Chennai');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     setMessage('');
 
-    // This URL must point to your live Render backend
-    // It's configured via an environment variable
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     if (!apiUrl) {
@@ -35,12 +34,17 @@ export default function Home() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'An unknown error occurred.');
+        throw new Error(data.message || 'An unknown error occurred from the backend.');
       }
 
       setMessage(data.message);
     } catch (error) {
-      setMessage(`Error: ${error.message}`);
+      // ✅ CORRECTED BLOCK: Check the error type before using it.
+      if (error instanceof Error) {
+        setMessage(`Error: ${error.message}`);
+      } else {
+        setMessage(`An unexpected error occurred: ${String(error)}`);
+      }
     } finally {
       setLoading(false);
     }
