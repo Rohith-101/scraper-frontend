@@ -39,7 +39,6 @@ export default function Home() {
 
       setMessage(data.message);
     } catch (error) {
-      // ✅ CORRECTED BLOCK: Check the error type before using it.
       if (error instanceof Error) {
         setMessage(`Error: ${error.message}`);
       } else {
@@ -86,7 +85,7 @@ export default function Home() {
         )}
       </div>
       <footer className="mt-8 text-center text-xs text-gray-500">
-        <p>This tool is for educational purposes only. Scraping may be against Google's Terms of Service.</p>
+        <p>This tool is for educational purposes only. Scraping may be against Google&apos;s Terms of Service.</p>
       </footer>
     </main>
   );
